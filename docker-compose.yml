@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  mysql-db:
+    image: mysql:latest  
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: examplepassword
+      MYSQL_DATABASE: yourdbname
+      MYSQL_USER: yourdbuser
+      MYSQL_PASSWORD: yourdbpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+  rabbitmq:
+    image: rabbitmq:management 
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: yourrabbitmquser
+      RABBITMQ_DEFAULT_PASS: yourrabbitmqpassword
+
+  node-backend:
+    build: "./"    # Replace this with the path to your Node.js app
+    restart: always
+    ports:
+      - "3000:3000"                     # Port your Node.js app is running on
+
+volumes:
+  mysql-data:
